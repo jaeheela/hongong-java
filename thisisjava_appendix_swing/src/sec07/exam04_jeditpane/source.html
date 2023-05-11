@@ -1,0 +1,55 @@
+<html>
+<body>
+<a href="jeditorpane.html">Previous</a>
+<hr/>
+<pre>
+import java.awt.*;
+import java.awt.event.*;
+import javax.swing.*;
+import javax.swing.event.*;
+
+public class JEditorPaneExample extends JFrame {
+	//필드
+	private JEditorPane jEditorPane;
+	
+	//생성자
+	public JEditorPaneExample() {
+		initialize();
+	}
+	
+	//메소드
+	private void initialize() {
+		this.setTitle("JEditorPaneExample");
+		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		this.getContentPane().add(new JScrollPane(getJEditorPane()), BorderLayout.CENTER);
+		this.setSize(400, 300);
+	}
+	
+	public JEditorPane getJEditorPane() {
+		if(jEditorPane == null) {
+			jEditorPane = new JEditorPane();
+			try {
+				jEditorPane.setPage(getClass().getResource("jeditorpane.html"));
+			} catch(Exception e) {}
+			jEditorPane.setEditable(false);
+			jEditorPane.addHyperlinkListener(new HyperlinkListener() {
+				public void hyperlinkUpdate(HyperlinkEvent e) {
+					if(e.getEventType() == HyperlinkEvent.EventType.ACTIVATED) {
+						try {
+							jEditorPane.setPage(e.getURL());
+						} catch(Exception e2) {}
+					}
+				}
+			});
+		}
+		return jEditorPane;
+	}
+
+	public static void main(String[] args) {
+		JEditorPaneExample example = new JEditorPaneExample();
+		example.setVisible(true);
+	}
+}
+</pre>
+</body>
+</html>
